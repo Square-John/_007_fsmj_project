@@ -6,20 +6,20 @@ import sys
 from tqdm import tqdm
 
 
-# 读取配置文件
-config = configparser.ConfigParser(interpolation=None)
-config.read('config.ini', encoding='utf-8')
-# 获取cookie
-minutes_cookie = config.get('Cookies', 'minutes_cookie')
-# 从键盘获取文件路径
-
 # 命令行参数通过 sys.argv 列表获取，其中 sys.argv[0] 是脚本名称
-if len(sys.argv) > 1:
+if len(sys.argv) > 2:
     # 获取第一个参数（索引为1，因为索引0是脚本名）
     file_path = sys.argv[1]
+    conf_path = sys.argv[2]
 else:
-    print("未提供文件路径，将退出程序\n")
+    print("未提供文件路径或配置文件未找到，将退出程序\n")
     sys.exit()
+
+# 读取配置文件
+config = configparser.ConfigParser(interpolation=None)
+config.read(conf_path, encoding='utf-8')
+# 获取cookie
+minutes_cookie = config.get('Cookies', 'minutes_cookie')
     
 # 获取代理设置
 use_proxy = config.get('代理设置', '是否使用代理（是/否）')
@@ -70,6 +70,7 @@ class FeishuUploader:
         # 如果文件名中包含后缀，需要去掉后缀
         if '.' in file_name:
             file_name = file_name[:file_name.rfind('.')]
+            print(file_name)
         prepare_url = f'https://meetings.feishu.cn/minutes/api/upload/prepare'
         json = {
             'name': file_name,

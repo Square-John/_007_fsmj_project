@@ -2,14 +2,25 @@ import configparser, locale, os, re, subprocess, time
 from concurrent.futures import as_completed, ThreadPoolExecutor
 
 import requests
+import sys
 from tqdm import tqdm
 
 locale.setlocale(locale.LC_CTYPE,"chinese")
 
 
+# 命令行参数通过 sys.argv 列表获取，其中 sys.argv[0] 是脚本名称
+if len(sys.argv) > 2:
+    # 获取第一个参数（索引为1，因为索引0是脚本名）
+    save_path = sys.argv[1]
+    conf_path = sys.argv[2]
+else:
+    print("未提供文件路径或配置文件未找到，将退出程序\n")
+    sys.exit()
+
+
 # 读取配置文件
 config = configparser.ConfigParser(interpolation=None)
-config.read('config.ini', encoding='utf-8')
+config.read(conf_path, encoding='utf-8')
 # 获取配置文件中的cookie
 minutes_cookie = config.get('Cookies', 'minutes_cookie')
 manager_cookie = config.get('Cookies', 'manager_cookie')
@@ -21,9 +32,7 @@ download_type = int(config.get('下载设置', '文件类型'))
 subtitle_only = True if config.get('下载设置', '是否只下载字幕文件（是/否）')=='是' else False
 usage_threshold = float(config.get('下载设置', '妙记额度删除阈值'))
 # 获取保存路径
-save_path = config.get('下载设置', '保存路径（不填则默认为当前路径/data）')
-if not save_path:
-    save_path = './data'
+
 # 获取字幕格式设置
 subtitle_params = {'add_speaker': True if config.get('下载设置', '字幕是否包含说话人（是/否）')=='是' else False,
                    'add_timestamp': True if config.get('下载设置', '字幕是否包含时间戳（是/否）')=='是' else False,
