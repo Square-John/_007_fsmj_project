@@ -1,0 +1,168 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: gcc.exe 生成活动文件",
+            "command": "D:\\SoftwareFolder\\mingw64\\bin\\gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\build\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "调试器生成的任务。"
+        },
+        {
+            "label": "新建build文件夹",
+            //ctrl+alt+n space
+            "detail": "用于新建存放编译后二进制程序的build文件夹",
+            "type": "shell",
+            "icon": {
+                "color": "terminal.ansiRed",
+                "id": "file-directory-create"
+            },
+            "command": "if(Test-Path '${fileDirname}\\build'){echo '已存在build'}else{mkdir '${fileDirname}\\build' > $null;echo '完成build的创建'}",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "close": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        {
+            "label": "C/C++程序编译",
+            //ctrl+alt+b space
+            "detail": "编译C语言程序源代码",
+            "type": "shell",
+            "icon": {
+                "color": "terminal.ansiRed",
+                "id": "archive"
+            },
+            "command": "gcc",
+            "args": [
+                "-Wall",
+                "-std=c17",
+                "-g",
+                "-fexec-charset=GB2312",
+                // "-fexec-charset=UTF-8",
+                // "-I",
+                // "'${workspaceFolder}\\_02_headers'",
+                "'${file}'",
+                // "'${fileDirname}\\*.c'",
+                "-o",
+                "'${fileDirname}\\build\\${fileBasenameNoExtension}.exe'",
+                // "-lregex",
+                // "-lws2_32"
+            ],
+            "group": "build",
+            "problemMatcher": "$gcc",
+            "presentation": {
+                "echo": true,
+                "close": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false,
+                "revealProblems": "onProblem"
+            },
+            "dependsOn": [
+                "新建build文件夹"
+            ]
+        },
+        {
+            "label": "C/C++程序运行",
+            //ctrl+alt+n space
+            "detail": "运行当前C代码编译后的程序",
+            "type": "shell",
+            "promptOnClose": true,
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "run"
+            },
+            "command": "${fileDirname}\\build\\${fileBasenameNoExtension}.exe",
+            "group": {
+                "kind": "build"
+            },
+            "runOptions": {
+                "instanceLimit": 10
+            },
+            "presentation": {
+                "echo": true,
+                "close": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false,
+                "revealProblems": "onProblem"
+            }
+        },
+        {
+            "label": "C/C++程序编译并运行",
+            "detail": "进行C程序编译，并在完成后自动运行",
+            "type": "shell",
+            "promptOnClose": true,
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "run"
+            },
+            "command": "${fileDirname}\\build\\${fileBasenameNoExtension}.exe",
+            "group": {
+                "kind": "build"
+            },
+            "dependsOn": [
+                "C/C++程序编译"
+            ],
+            "runOptions": {
+                "instanceLimit": 10
+            },
+            "presentation": {
+                "echo": true,
+                "close": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false,
+                "revealProblems": "onProblem"
+            }
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: cl.exe 生成活动文件",
+            "command": "cl.exe",
+            "args": [
+                "/Zi",
+                "/EHsc",
+                "/nologo",
+                "/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "调试器生成的任务。"
+        }
+    ],
+    "version": "2.0.0"
+}
