@@ -166,7 +166,7 @@ class FeishuDownloader:
             file_name = start_time+"至"+stop_time+file_name
         else:
             create_time = time.strftime("%Y年%m月%d日%H时%M分", time.localtime(minutes['create_time'] / 1000))
-            file_name = create_time+file_name
+            file_name = file_name
         
         subtitle_name = file_name
             
